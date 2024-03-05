@@ -1,3 +1,5 @@
+using EmployeeManagement.Core;
+
 namespace Web
 {
     public class Program
@@ -8,6 +10,14 @@ namespace Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            var connectionString = builder.Configuration.GetConnectionString("DbContextConnection");
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new Exception("Not found connection string");
+            }
+            // add core 
+            builder.Services.AddCoreServices(connectionString);
 
             var app = builder.Build();
 
